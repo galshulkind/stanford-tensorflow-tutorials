@@ -51,9 +51,15 @@ class VGG(object):
         Hint for choosing strides size: 
             for small images, you probably don't want to skip any pixel
         """
+        W_mat,bias_arr=self._weights(layer_idx,layer_name)
+        out=tf.layers.conv2d(inputs=prev_layer,filters=bias_arr.shape[0],padding='same',activation=tf.nn.relu,
+                          kernel_size=W_mat.shape[0:2],
+                          trainable=False,
+                          kernel_initializer=tf.constant_initializer(W_mat),
+                          bias_initializer=tf.constant_initializer(bias_arr),name=layer_name+'_relu_output')
         ###############################
         ## TO DO
-        out = None
+        ## out = None
         ###############################
         setattr(self, layer_name, out)
 
@@ -68,9 +74,10 @@ class VGG(object):
 
         Hint for choosing strides and kszie: choose what you feel appropriate
         """
+        out=tf.layers.average_pooling2d(prev_layer,pool_size=[2,2],strides=[2,2],name=layer_name+"pool")
         ###############################
         ## TO DO
-        out = None
+        ## out = None
         ###############################
         setattr(self, layer_name, out)
 
